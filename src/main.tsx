@@ -11,14 +11,19 @@ import '@mantine/tiptap/styles.css';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
-import './index.css';
+import { Provider } from 'react-redux';
 import { MantineProvider } from '@mantine/core';
+
+import './index.css';
+import { store } from './store';
 import App from './App.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <MantineProvider>
-      <App />
-    </MantineProvider>
+    <Provider store={store}>
+      <MantineProvider>
+        <App />
+      </MantineProvider>
+    </Provider>
   </React.StrictMode>
 );
