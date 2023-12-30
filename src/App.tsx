@@ -1,113 +1,129 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
-import { Box, Flex, NumberInput, Title } from '@mantine/core';
+import { Box, Button, Flex, RingProgress, Text, Title, VisuallyHidden } from '@mantine/core';
+import { IconClockPause, IconClockPlay, IconClockStop, IconRepeat } from '@tabler/icons-react';
+import { useAppDispatch, useAppSelector } from './store/hooks.ts';
+import { flip, pause, reset, start, tick } from './store/timerSlice.ts';
 
-class HourGlass {
-  readonly #time: number;
-
-  #elapsed: number = 0;
-
-  #interval: number | null = null;
-
-  constructor(time: number) {
-    this.#time = time;
-  }
-
-  get elapsed(): number {
-    return this.#elapsed;
-  }
-
-  start(): void {
-    this.#tick();
-  }
-
-  stop(): void {
-    if (this.#interval) {
-      clearInterval(this.#interval);
-    }
-  }
-
-  reset(): void {
-    this.#elapsed = 0;
-  }
-
-  flip(): void {
-    this.#elapsed = this.#time - this.#elapsed;
-  }
-
-  #tick(): void {
-    this.#interval = setInterval(() => {
-      this.#elapsed = this.#elapsed + 1;
-
-      if (this.#elapsed >= this.#time) {
-        this.stop();
-      }
-    }, 1000);
-  }
-}
-
-type TimeSelectionProps = {
-  time: number;
-  onChange?: (time: number) => void;
-};
-
-function TimeSelection(props: Readonly<TimeSelectionProps>): React.JSX.Element {
-  const { time } = props;
-  const [minutes, setMinutes] = useState(Math.floor(time / 60));
-  const [seconds, setSeconds] = useState(time % 60);
+function HourGlassControls(): React.JSX.Element {
+  const dispatch = useAppDispatch();
+  const { isStarted, isPaused, isFinished } = useAppSelector((state) => state.timer);
 
   return (
-    <Box>
-      <Flex gap="sm">
-        <NumberInput
-          label="Minutes"
-          value={minutes}
-          w={150}
-          onChange={(value) => {
-            const n = Number(value);
-            if (n < 0) {
-              return;
-            }
-
-            setMinutes(n);
-            props.onChange?.(n * 60 + seconds);
+    <Box p="sm" my="xs">
+      <Flex gap="sm" justify="center">
+        <Button
+          size="xl"
+          color="green"
+          title="Start"
+          disabled={isStarted && !isPaused}
+          onClick={() => {
+            dispatch(start());
           }}
-        />
-        <NumberInput
-          label="Seconds"
-          value={seconds}
-          w={150}
-          onChange={(value) => {
-            const n = Number(value);
-            if (n < 0) {
-              return;
-            }
-
-            const newMinutes = Math.floor(n / 60) + minutes;
-            const newSeconds = n % 60;
-
-            setMinutes(newMinutes);
-            setSeconds(newSeconds);
-            props.onChange?.(newMinutes * 60 + newSeconds);
+        >
+          <IconClockPlay size={48} />
+          <VisuallyHidden>Start</VisuallyHidden>
+        </Button>
+        <Button
+          size="xl"
+          color="red"
+          title="Pause"
+          disabled={!isStarted || (isStarted && isPaused)}
+          onClick={() => {
+            dispatch(pause());
           }}
-        />
+        >
+          <IconClockPause size={48} />
+          <VisuallyHidden>Stop</VisuallyHidden>
+        </Button>
+        <Button
+          size="xl"
+          color="blue"
+          title="Flip"
+          disabled={!isStarted}
+          onClick={() => {
+            dispatch(flip());
+          }}
+        >
+          <IconRepeat size={48} />
+          <VisuallyHidden>Flip</VisuallyHidden>
+        </Button>
+        <Button
+          size="xl"
+          color="red.9"
+          title="Reset"
+          disabled={(!isStarted || (isStarted && !isPaused)) && !isFinished}
+          onClick={() => {
+            dispatch(reset());
+          }}
+        >
+          <IconClockStop size={48} />
+          <VisuallyHidden>Reset</VisuallyHidden>
+        </Button>
       </Flex>
     </Box>
   );
 }
 
+function toMinutesAndSeconds(seconds: number): string {
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = String(seconds % 60).padStart(2, '0');
+
+  return `${minutes}:${remainingSeconds}`;
+}
+
 function App(): React.JSX.Element {
-  const [time, setTime] = React.useState(330);
-  const onChange = (time: number): void => {
-    setTime(time);
-  };
+  const dispatch = useAppDispatch();
+  const { time, elapsed, isStarted, isPaused, isFinished } = useAppSelector((state) => state.timer);
+
+  useEffect(() => {
+    let interval: number | undefined;
+
+    if (isStarted) {
+      interval = setInterval(() => {
+        console.log('tick');
+        if (isStarted && !isPaused && !isFinished) {
+          dispatch(tick());
+        }
+
+        if (isFinished) {
+          clearInterval(interval);
+        }
+      }, 1000);
+    }
+
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+    };
+  }, [isFinished, isPaused, isStarted, dispatch]);
+
+  const progressColor = elapsed > time - time / 4 ? 'red' : 'green';
 
   return (
-    <div>
-      <Title order={1}>Paul Rules!</Title>
-      <Title order={2}>{time}</Title>
-      <TimeSelection time={time} onChange={onChange} />
-    </div>
+    <Flex
+      justify="center"
+      direction="column"
+      style={{
+        minHeight: '100svh',
+      }}
+    >
+      <Flex justify="center">
+        <RingProgress
+          rootColor={progressColor}
+          sections={[{ value: (elapsed / time) * 100, color: 'dark.8' }]}
+          size={800}
+          thickness={120}
+          label={
+            <Text c={`${progressColor}.4`} fw={900} ta="center" size="5rem">
+              {toMinutesAndSeconds(time - elapsed)}
+            </Text>
+          }
+        />
+      </Flex>
+      <HourGlassControls />
+    </Flex>
   );
 }
 

@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import type { PayloadAction } from '@reduxjs/toolkit';
 
 export type TimerState = {
   tick: 1000;
@@ -31,20 +30,12 @@ export const timerSlice = createSlice({
   initialState: initialState(),
   reducers: {
     start: (state) => {
-      if (state.isFinished || (state.isStarted && !state.isPaused)) {
-        return;
+      if (state.interval) {
+        clearInterval(state.interval);
       }
 
       state.isStarted = true;
       state.isPaused = false;
-      state.interval = window.setInterval(() => {
-        state.elapsed = state.elapsed + 1;
-
-        if (state.elapsed >= state.time) {
-          state.isFinished = true;
-          clearInterval(state.interval);
-        }
-      }, state.tick);
     },
     pause: (state) => {
       state.isPaused = true;
@@ -64,9 +55,17 @@ export const timerSlice = createSlice({
       state.isPaused = false;
       state.isFinished = false;
     },
+    tick: (state) => {
+      if (state.elapsed >= state.time) {
+        state.isFinished = true;
+        return;
+      }
+
+      state.elapsed = state.elapsed + 1;
+    },
   },
 });
 
-export const { start, flip, reset, pause } = timerSlice.actions;
+export const { start, flip, reset, pause, tick } = timerSlice.actions;
 
 export default timerSlice.reducer;
