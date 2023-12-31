@@ -17,19 +17,19 @@ function getProgressColor(elapsed: number, time: number): string {
   return 'green';
 }
 
-function getRingWidth(): [number, number] {
-  if (window.matchMedia('(orientation: landscape)').matches) {
-    const size = window.innerHeight - 200;
-    const thickness = window.innerHeight / 10;
+function getRingWidth(element?: HTMLElement): [number, number] {
+  const height = element?.clientHeight ?? window.innerHeight;
+  const width = element?.clientWidth ?? window.innerWidth;
 
-    return [window.innerHeight < size ? size : window.innerHeight - 100, thickness];
+  if (window.matchMedia('(orientation: portrait)').matches) {
+    return [width, width / 8];
   }
 
-  return [window.innerWidth, window.innerWidth / 10];
+  return [height, height / 7.5];
 }
 
 export function HourGlass(): React.JSX.Element {
-  const elementRef = useRef(null);
+  const elementRef = useRef<HTMLDivElement>(null);
   const { time, elapsed } = useAppSelector((state) => state.timer);
   const [[size, thickness], setRingWidth] = useState(getRingWidth());
   const progressColor = getProgressColor(elapsed, time);
@@ -38,8 +38,10 @@ export function HourGlass(): React.JSX.Element {
     const element = elementRef.current;
     const observer = new ResizeObserver(
       debounce(() => {
-        setRingWidth(getRingWidth());
-      }, 250)
+        if (elementRef.current) {
+          setRingWidth(getRingWidth(elementRef.current));
+        }
+      }, 10)
     );
 
     if (element) {
@@ -54,7 +56,13 @@ export function HourGlass(): React.JSX.Element {
   }, [setRingWidth]);
 
   return (
-    <Flex justify="center" ref={elementRef}>
+    <Flex
+      justify="center"
+      align="center"
+      direction="column"
+      ref={elementRef}
+      style={{ height: '80svh' }}
+    >
       <RingProgress
         rootColor={progressColor}
         sections={[{ value: (elapsed / time) * 100, color: 'dark.8' }]}

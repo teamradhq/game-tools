@@ -1,3 +1,9 @@
+/**
+ * Returns the total number of seconds converted from minutes and seconds.
+ *
+ * @param minutes
+ * @param seconds
+ */
 export function fromMinutesAndSeconds([minutes, seconds]: [number, number]): number {
   return minutes * 60 + seconds;
 }
