@@ -30,7 +30,7 @@ function getRingWidth(element?: HTMLElement): [number, number] {
 
 export function HourGlass(): React.JSX.Element {
   const elementRef = useRef<HTMLDivElement>(null);
-  const { time, elapsed } = useAppSelector((state) => state.timer);
+  const { time, elapsed, showTime, isStarted } = useAppSelector((state) => state.timer);
   const [[size, thickness], setRingWidth] = useState(getRingWidth());
   const progressColor = getProgressColor(elapsed, time);
 
@@ -61,7 +61,7 @@ export function HourGlass(): React.JSX.Element {
       align="center"
       direction="column"
       ref={elementRef}
-      style={{ height: '80svh' }}
+      style={{ height: '77.5svh' }}
     >
       <RingProgress
         rootColor={progressColor}
@@ -69,9 +69,11 @@ export function HourGlass(): React.JSX.Element {
         size={size}
         thickness={thickness}
         label={
-          <Text c={`${progressColor}.4`} fw={900} ta="center" size="5rem">
-            {formatMinutesAndSeconds(time - elapsed)}
-          </Text>
+          (!isStarted || showTime) && (
+            <Text c={`${progressColor}.4`} fw={900} ta="center" size="5rem">
+              {formatMinutesAndSeconds(time - elapsed)}
+            </Text>
+          )
         }
       />
     </Flex>

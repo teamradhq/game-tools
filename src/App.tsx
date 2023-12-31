@@ -18,13 +18,13 @@ function App(): React.JSX.Element {
     if (isStarted) {
       interval = setInterval(() => {
         if (isStarted && !isPaused && !isFinished) {
-          dispatch(tick());
+          dispatch(tick(1 / 50));
         }
 
         if (isFinished) {
           clearInterval(interval);
         }
-      }, 1000);
+      }, 1000 / 50);
     }
 
     return () => {

@@ -8,6 +8,7 @@ export type TimerState = {
   isStarted: boolean;
   isPaused: boolean;
   isFinished: boolean;
+  showTime: boolean;
 };
 
 function initialState(): TimerState {
@@ -18,6 +19,7 @@ function initialState(): TimerState {
     isStarted: false,
     isPaused: false,
     isFinished: false,
+    showTime: true,
   };
 }
 
@@ -31,6 +33,9 @@ export const timerSlice = createSlice({
       }
 
       state.time = action.payload;
+    },
+    setShowTime(state, action: PayloadAction<boolean>) {
+      state.showTime = action.payload;
     },
     start: (state) => {
       if (state.interval) {
@@ -58,17 +63,17 @@ export const timerSlice = createSlice({
       state.isPaused = false;
       state.isFinished = false;
     },
-    tick: (state) => {
+    tick: (state, action: PayloadAction<number>) => {
       if (state.elapsed >= state.time) {
         state.isFinished = true;
         return;
       }
 
-      state.elapsed = state.elapsed + 1;
+      state.elapsed = state.elapsed + action.payload;
     },
   },
 });
 
-export const { setTime, start, flip, reset, pause, tick } = timerSlice.actions;
+export const { setTime, setShowTime, start, flip, reset, pause, tick } = timerSlice.actions;
 
 export default timerSlice.reducer;
