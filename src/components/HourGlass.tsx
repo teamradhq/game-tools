@@ -3,7 +3,7 @@ import { debounce } from 'lodash';
 import { Flex, RingProgress, Text } from '@mantine/core';
 
 import { useAppSelector } from '@src/store/hooks.ts';
-import { toMinutesAndSeconds } from '@src/utils.ts';
+import { formatMinutesAndSeconds } from '@src/utils.ts';
 
 function getProgressColor(elapsed: number, time: number): string {
   if (elapsed >= time - time / 4) {
@@ -62,7 +62,7 @@ export function HourGlass(): React.JSX.Element {
         thickness={thickness}
         label={
           <Text c={`${progressColor}.4`} fw={900} ta="center" size="5rem">
-            {toMinutesAndSeconds(time - elapsed)}
+            {formatMinutesAndSeconds(time - elapsed)}
           </Text>
         }
       />

@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export type TimerState = {
   tick: 1000;
@@ -25,6 +25,13 @@ export const timerSlice = createSlice({
   name: 'Timer',
   initialState: initialState(),
   reducers: {
+    setTime: (state, action: PayloadAction<number>) => {
+      if (state.isStarted) {
+        return;
+      }
+
+      state.time = action.payload;
+    },
     start: (state) => {
       if (state.interval) {
         clearInterval(state.interval);
@@ -62,6 +69,6 @@ export const timerSlice = createSlice({
   },
 });
 
-export const { start, flip, reset, pause, tick } = timerSlice.actions;
+export const { setTime, start, flip, reset, pause, tick } = timerSlice.actions;
 
 export default timerSlice.reducer;

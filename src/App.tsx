@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from '@src/store/hooks.ts';
 import { tick } from '@src/store/timerSlice.ts';
 import { HourGlassControls } from '@src/components/HourGlassControls.tsx';
 import { HourGlass } from '@src/components/HourGlass.tsx';
+import { TimeSelector } from '@src/components/TimeSelector.tsx';
 
 function App(): React.JSX.Element {
   const dispatch = useAppDispatch();
@@ -42,6 +43,7 @@ function App(): React.JSX.Element {
       }}
     >
       <HourGlass />
+      <TimeSelector />
       <HourGlassControls />
     </Flex>
   );
