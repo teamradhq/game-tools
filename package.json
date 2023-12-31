@@ -9,7 +9,10 @@
     "preview": "vite preview",
     "lint": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix",
     "lint:nofix": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --max-warnings 0",
-    "test": "jest --config jest.config.ts"
+    "test": "jest --config jest.config.ts",
+    "typecheck:node": "tsc --noEmit -p tsconfig.node.json --composite false",
+    "typecheck:web": "tsc --noEmit -p tsconfig.json --composite false",
+    "typecheck": "pnpm run typecheck:node && pnpm run typecheck:web"
   },
   "devDependencies": {
     "@electron-toolkit/eslint-config-prettier": "^1.0.1",

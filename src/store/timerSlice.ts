@@ -3,8 +3,6 @@ import { createSlice } from '@reduxjs/toolkit';
 export type TimerState = {
   tick: 1000;
   time: number;
-  minutes: number;
-  seconds: number;
   interval?: number;
   elapsed: number;
   isStarted: boolean;
@@ -15,9 +13,7 @@ export type TimerState = {
 function initialState(): TimerState {
   return {
     tick: 1000,
-    time: 330,
-    minutes: 5,
-    seconds: 30,
+    time: 10,
     elapsed: 0,
     isStarted: false,
     isPaused: false,
