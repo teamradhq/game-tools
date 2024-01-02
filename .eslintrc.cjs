@@ -53,5 +53,13 @@ module.exports = {
         ],
       },
     },
+    {
+      files: ['*.cy.*'],
+      extends: ['plugin:cypress/recommended'],
+      plugins: ['cypress'],
+      env: {
+        'cypress/globals': true,
+      },
+    },
   ],
 };
