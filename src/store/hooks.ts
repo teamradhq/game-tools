@@ -62,15 +62,23 @@ export function useRunTimerEffect(ticksPerSecond: number = 1): void {
   }, [isFinished, isPaused, isStarted, dispatch]);
 }
 
-function getRingWidth(element?: HTMLElement): [number, number] {
+function isLandscape(element?: HTMLElement): boolean {
+  if (!element) {
+    return window.matchMedia('(orientation: landscape)').matches;
+  }
+
+  return element.clientWidth > element.clientHeight;
+}
+
+function getRingWidth(element?: HTMLElement): [number, number, number] {
   const height = element?.clientHeight ?? window.innerHeight;
   const width = element?.clientWidth ?? window.innerWidth;
 
-  if (window.matchMedia('(orientation: portrait)').matches) {
-    return [width, width / 8];
+  if (isLandscape(element)) {
+    return [height, height / 8, height / 8 / 16];
   }
 
-  return [height, height / 7.5];
+  return [width, width / 8, width / 8 / 16];
 }
 
 /**
@@ -79,7 +87,7 @@ function getRingWidth(element?: HTMLElement): [number, number] {
  */
 export function useTimerResizeEffect(
   debounceTime?: number
-): [[number, number], RefObject<HTMLDivElement>] {
+): [[number, number, number], RefObject<HTMLDivElement>] {
   const elementRef = useRef<HTMLDivElement>(null);
   const [ringWidth, setRingWidth] = useState(getRingWidth());
   const wait = debounceTime && debounceTime !== 0 ? Math.abs(debounceTime) : 10;

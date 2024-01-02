@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Flex, NumberInput } from '@mantine/core';
 
 import { useAppDispatch, useAppSelector } from '@src/store/hooks.ts';
-import { fromMinutesAndSeconds, toMinutesAndSeconds } from '@src/utils.ts';
+import { fromMinutesAndSeconds, toMinutesAndSeconds } from '@src/utils/index.ts/utils.ts';
 import { setTime } from '@src/store/timerSlice.ts';
 
 const DEFAULT_TIME_INPUT_PROPS = {
