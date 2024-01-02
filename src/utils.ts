@@ -15,9 +15,9 @@ export function fromMinutesAndSeconds([minutes, seconds]: [number, number]): num
  */
 export function toMinutesAndSeconds(seconds: number): [number, number] {
   const minutes = Math.floor(seconds / 60);
-  const remainingSeconds = Math.ceil(seconds % 60);
+  const remainingSeconds = Math.floor(seconds % 60);
 
-  return [minutes > 0 ? minutes : 0, remainingSeconds];
+  return [minutes > 0 ? minutes : 0, remainingSeconds > 0 ? remainingSeconds : 0];
 }
 
 /**
