@@ -1,10 +1,9 @@
 import React from 'react';
+import { IconClockPause, IconClockPlay, IconClockStop, IconRepeat } from '@tabler/icons-react';
 
+import { ControlButton } from '@src/components/Utils/ControlButton.tsx';
 import { useTimerControls } from '@src/store/hooks.ts';
 import { flip, pause, reset, start } from '@src/store/timerSlice.ts';
-
-import { IconClockPause, IconClockPlay, IconClockStop, IconRepeat } from '@tabler/icons-react';
-import { ControlButton } from '@src/components/Utils/ControlButton.tsx';
 
 export function Start(): React.JSX.Element {
   const [{ isStarted, isPaused }, dispatch] = useTimerControls(start);
