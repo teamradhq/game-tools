@@ -42,6 +42,7 @@ export function TimeInput(props: Readonly<TimeInputProps>): React.JSX.Element {
         }}
         w={w}
         size={size}
+        data-testid="timeInput-minutes"
       />
       <NumberInput
         label="Seconds"
@@ -56,6 +57,7 @@ export function TimeInput(props: Readonly<TimeInputProps>): React.JSX.Element {
         }}
         w={w}
         size={size}
+        data-testid="timeInput-seconds"
       />
     </Flex>
   );

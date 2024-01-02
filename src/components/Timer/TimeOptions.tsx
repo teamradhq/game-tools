@@ -26,6 +26,7 @@ export function TimeOptions(props: Readonly<TimeOptionsProps>): React.JSX.Elemen
         onChange={(event) => {
           dispatch(setShowTime(event.currentTarget.checked));
         }}
+        data-testid="timeOptions-showTime"
       />
     </Flex>
   );

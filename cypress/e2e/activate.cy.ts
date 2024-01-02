@@ -1,5 +1,5 @@
 describe('app activation', () => {
-  it('page loads', () => {
+  it('should load the page', () => {
     cy.visit('/');
   });
 });
