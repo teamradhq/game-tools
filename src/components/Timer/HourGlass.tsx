@@ -21,13 +21,7 @@ export function HourGlass(props: Readonly<HourGlassProps>): React.JSX.Element {
   useRunTimerEffect(props.ticksPerSecond ?? 50);
 
   return (
-    <Flex
-      justify="center"
-      align="center"
-      direction="column"
-      ref={elementRef}
-      style={{ height: '77.5svh' }}
-    >
+    <Flex justify="center" align="center" direction="column" ref={elementRef} h="60svh">
       <RingProgress
         rootColor={progressColor}
         sections={[{ value: (elapsed / time) * 100, color: 'dark.8' }]}

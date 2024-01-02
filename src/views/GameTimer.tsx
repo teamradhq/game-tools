@@ -12,7 +12,7 @@ export function GameTimer(): React.JSX.Element {
         minHeight: '100svh',
       }}
     >
-      <Paper h="75svh">
+      <Paper>
         <HourGlass />
       </Paper>
       <Paper h="20svh">

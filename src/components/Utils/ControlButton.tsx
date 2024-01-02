@@ -34,7 +34,7 @@ export function ControlButton(props: Readonly<ControlButtonProps>): React.JSX.El
       onClick={props.onClick}
       variant="filled"
     >
-      <Icon size={36} />
+      <Icon size={30} />
       {title && <VisuallyHidden>{title}</VisuallyHidden>}
     </Button>
   );

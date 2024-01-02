@@ -18,7 +18,7 @@ export function TimeOptions(props: Readonly<TimeOptionsProps>): React.JSX.Elemen
   const size = props.size ?? DEFAULT_TIME_OPTIONS_PROPS.size;
 
   return (
-    <Flex>
+    <Flex align="center">
       <Checkbox
         label="Show Time"
         checked={showTime}
