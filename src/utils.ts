@@ -30,3 +30,22 @@ export function formatMinutesAndSeconds(seconds: number): string {
 
   return `${minutes}:${String(remainingSeconds).padStart(2, '0')}`;
 }
+
+/**
+ * Given time and elapsed time determine a progress color. The color will progress through green, yellow and
+ * red as the elapsed time gets closer to the limit.
+ *
+ * @param elapsed
+ * @param time
+ */
+export function getProgressColor(elapsed: number, time: number): string {
+  if (elapsed >= time - time / 4) {
+    return 'red';
+  }
+
+  if (elapsed >= time - time / 2) {
+    return 'yellow';
+  }
+
+  return 'green';
+}

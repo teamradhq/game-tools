@@ -2,24 +2,18 @@ import React from 'react';
 import { Flex, RingProgress, Text } from '@mantine/core';
 
 import { useRunTimerEffect, useTimerControls, useTimerResizeEffect } from '@src/store/hooks.ts';
-import { formatMinutesAndSeconds } from '@src/utils.ts';
-
-function getProgressColor(elapsed: number, time: number): string {
-  if (elapsed >= time - time / 4) {
-    return 'red';
-  }
-
-  if (elapsed >= time - time / 2) {
-    return 'yellow';
-  }
-
-  return 'green';
-}
+import { formatMinutesAndSeconds, getProgressColor } from '@src/utils.ts';
 
 type HourGlassProps = {
   ticksPerSecond?: number;
 };
 
+/**
+ * The hourglass provides a visual representation of the current timer state.
+ *
+ * @param props
+ * @constructor
+ */
 export function HourGlass(props: Readonly<HourGlassProps>): React.JSX.Element {
   const [{ time, elapsed, showTime, isStarted }] = useTimerControls();
   const progressColor = getProgressColor(elapsed, time);

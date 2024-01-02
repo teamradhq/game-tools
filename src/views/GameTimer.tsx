@@ -16,8 +16,8 @@ export function GameTimer(): React.JSX.Element {
         <HourGlass />
       </Paper>
       <Paper h="20svh">
-        <TimeSelector />
         <HourGlassControls />
+        <TimeSelector />
       </Paper>
     </Flex>
   );
