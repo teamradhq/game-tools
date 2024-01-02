@@ -1,8 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { debounce } from 'lodash';
+import React from 'react';
 import { Flex, RingProgress, Text } from '@mantine/core';
 
-import { useAppSelector } from '@src/store/hooks.ts';
+import { useRunTimerEffect, useTimerControls, useTimerResizeEffect } from '@src/store/hooks.ts';
 import { formatMinutesAndSeconds } from '@src/utils.ts';
 
 function getProgressColor(elapsed: number, time: number): string {
@@ -17,43 +16,15 @@ function getProgressColor(elapsed: number, time: number): string {
   return 'green';
 }
 
-function getRingWidth(element?: HTMLElement): [number, number] {
-  const height = element?.clientHeight ?? window.innerHeight;
-  const width = element?.clientWidth ?? window.innerWidth;
+type HourGlassProps = {
+  ticksPerSecond?: number;
+};
 
-  if (window.matchMedia('(orientation: portrait)').matches) {
-    return [width, width / 8];
-  }
-
-  return [height, height / 7.5];
-}
-
-export function HourGlass(): React.JSX.Element {
-  const elementRef = useRef<HTMLDivElement>(null);
-  const { time, elapsed, showTime, isStarted } = useAppSelector((state) => state.timer);
-  const [[size, thickness], setRingWidth] = useState(getRingWidth());
+export function HourGlass(props: Readonly<HourGlassProps>): React.JSX.Element {
+  const [{ time, elapsed, showTime, isStarted }] = useTimerControls();
   const progressColor = getProgressColor(elapsed, time);
-
-  useEffect(() => {
-    const element = elementRef.current;
-    const observer = new ResizeObserver(
-      debounce(() => {
-        if (elementRef.current) {
-          setRingWidth(getRingWidth(elementRef.current));
-        }
-      }, 10)
-    );
-
-    if (element) {
-      observer.observe(element);
-    }
-
-    return () => {
-      if (element) {
-        observer.unobserve(element);
-      }
-    };
-  }, [setRingWidth]);
+  const [[size, thickness], elementRef] = useTimerResizeEffect();
+  useRunTimerEffect(props.ticksPerSecond ?? 50);
 
   return (
     <Flex
