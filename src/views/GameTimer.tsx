@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@src/store/hooks.ts';
 import { tick } from '@src/store/timerSlice.ts';
-import { Flex } from '@mantine/core';
-import { HourGlass } from '@src/components/HourGlass.tsx';
-import { TimeSelector } from '@src/components/TimeSelector.tsx';
-import { HourGlassControls } from '@src/components/HourGlassControls.tsx';
+import { Flex, Paper } from '@mantine/core';
+import { HourGlass } from '@src/components/Timer/HourGlass.tsx';
+import { TimeSelector } from '@src/components/Timer/TimeSelector.tsx';
+import { HourGlassControls } from '@src/components/Timer/HourGlassControls.tsx';
 
 export function GameTimer(): React.JSX.Element {
   const dispatch = useAppDispatch();
@@ -34,15 +34,18 @@ export function GameTimer(): React.JSX.Element {
 
   return (
     <Flex
-      justify="center"
       direction="column"
       style={{
         minHeight: '100svh',
       }}
     >
-      <HourGlass />
-      <TimeSelector />
-      <HourGlassControls />
+      <Paper h="75svh">
+        <HourGlass />
+      </Paper>
+      <Paper h="20svh">
+        <TimeSelector />
+        <HourGlassControls />
+      </Paper>
     </Flex>
   );
 }
