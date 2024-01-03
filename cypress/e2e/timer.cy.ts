@@ -72,6 +72,22 @@ describe('hourglass timer', () => {
     cy.contains('0:07');
   });
 
+  it('should flip the timer', () => {
+    cy.get('@StartButton').click();
+    cy.get('@FlipButton').click();
+    cy.contains('0:00');
+  });
+
+  it('should flip the timer while paused', () => {
+    cy.get('@StartButton').click();
+    cy.contains('0:09');
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(1000);
+    cy.get('@PauseButton').click();
+    cy.get('@FlipButton').click();
+    cy.contains('0:01');
+  });
+
   it('should run the timer', () => {
     Cypress._.times(8, () => {
       cy.get('.mantine-NumberInput-control').eq(3).click();
