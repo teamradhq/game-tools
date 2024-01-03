@@ -17,7 +17,7 @@ describe('hourglass timer', () => {
   });
 
   it('should initialise the timer', () => {
-    cy.get('[data-testid="game-timer"]').should('exist');
+    cy.get('[data-testid="gameTimer-hourglass"]').should('exist');
     cy.get('@StartButton').should('not.be.disabled');
     cy.get('@PauseButton').should('be.disabled');
     cy.get('@FlipButton').should('be.disabled');

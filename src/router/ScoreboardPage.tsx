@@ -42,7 +42,14 @@ function PlayerTotal(props: Readonly<PlayerTotalProps>): React.JSX.Element {
   const { index, player, score } = props;
 
   return (
-    <Flex key={index} justify="stretch" bg={`dark.${(index % 2) + 8} `} my={0} px="sm" py="xs">
+    <Flex
+      data-testid="gameScoreboard-playerTotal"
+      justify="stretch"
+      bg={`dark.${(index % 2) + 8} `}
+      my={0}
+      px="sm"
+      py="xs"
+    >
       <ScoreSwatch
         color={theme.colors[player.color][4]}
         initials={player.name[player.name.indexOf(' ') + 1]}

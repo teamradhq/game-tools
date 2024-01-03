@@ -26,6 +26,13 @@ describe('game scoreboard', () => {
 
   it('should display game summary', () => {
     cy.contains('Summary');
-    cy.get('[data-testid="game-timer"]').should('exist');
+    cy.get('[data-testid="gameTimer-hourglass"]').should('exist');
+    Cypress._.times(4, (i) => {
+      cy.get('[data-testid="gameScoreboard-playerTotal"]').eq(i);
+
+      cy.get('[data-testid="gameScoreboard-playerTotal"] .mantine-Text-root').contains(
+        `Player ${i + 1}`
+      );
+    });
   });
 });

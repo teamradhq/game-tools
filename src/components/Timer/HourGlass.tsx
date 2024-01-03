@@ -21,7 +21,7 @@ export function HourGlass(props: Readonly<HourGlassProps>): React.JSX.Element {
   useRunTimerEffect(props.ticksPerSecond ?? 50);
 
   return (
-    <Container ref={elementRef} data-testid="game-timer">
+    <Container ref={elementRef} data-testid="gameTimer-hourglass">
       <Flex justify="center" align="center" direction="column" h="60svh">
         <RingProgress
           rootColor={progressColor}
