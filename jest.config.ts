@@ -37,4 +37,5 @@ const config: Config = {
   },
 };
 
+// noinspection JSUnusedGlobalSymbols
 export default config;

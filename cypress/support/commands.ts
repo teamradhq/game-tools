@@ -13,6 +13,7 @@ Cypress.Commands.add('hasNoHomePageLink', hasNoHomePageLink);
 
 declare global {
   namespace Cypress {
+    // noinspection JSUnusedGlobalSymbols
     interface Chainable {
       /**
        * Assert that the home page link exists and is clickable.
