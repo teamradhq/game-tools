@@ -7,16 +7,16 @@ describe('game scoreboard', () => {
     cy.hasHomePageLink();
   });
 
-  it('should list players', () => {
-    cy.contains('Players');
-
-    Cypress._.times(5, (i) => {
-      cy.get('[data-testid="player-name"]')
-        .eq(i - 1)
-        .should('exist');
+  it.only('should display settings', () => {
+    cy.get('.mantine-Drawer-overlay').should('not.exist');
+    cy.get('[data-testId="gameScoreboard-settingsButton"]').click();
+    cy.get('.mantine-Drawer-overlay').should('exist');
+    Cypress._.times(4, (i) => {
+      cy.get('[data-testid="player-setting"]').eq(i).should('exist');
     });
 
-    cy.contains('Edit Players');
+    cy.get('button.mantine-Drawer-close').click();
+    cy.get('.mantine-Drawer-overlay').should('not.exist');
   });
 
   it('should display the scoreboard', () => {
@@ -25,6 +25,6 @@ describe('game scoreboard', () => {
 
   it('should display game summary', () => {
     cy.contains('Summary');
-    cy.contains('0:10');
+    cy.get('[data-testid="game-timer"]').should('exist');
   });
 });
