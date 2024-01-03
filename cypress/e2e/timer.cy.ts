@@ -12,6 +12,11 @@ describe('hourglass timer', () => {
     cy.get('[data-testid="timeOptions-showTime"]').as('ShowTime');
   });
 
+  it('should link to home page', () => {
+    cy.contains('Home Page').click();
+    cy.location('pathname').should('eq', '/');
+  });
+
   it('should initialise controls', () => {
     cy.get('@StartButton').should('not.be.disabled');
     cy.get('@PauseButton').should('be.disabled');
