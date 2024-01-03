@@ -1,16 +1,24 @@
 import React from 'react';
-import { Container, Paper, Title } from '@mantine/core';
+import { Box, Container, Flex, Grid, Paper, Title } from '@mantine/core';
+import { Link } from 'react-router-dom';
+import { IconHourglassHigh } from '@tabler/icons-react';
 
 export function HomePage(): React.JSX.Element {
   return (
     <Container>
-      <Title order={1}>Game Tools</Title>
-      <Paper>
-        <Title order={2}>Game Timer</Title>
-        <p>
-          A timer that can be used for any game. It has a built-in stopwatch and countdown timer.
-        </p>
-      </Paper>
+      <Box px="md" py="xl">
+        <Title order={1}>Game Tools</Title>
+      </Box>
+      <Grid columns={2}>
+        <Grid.Col span={1}>
+          <Paper component={Link} to="/game-timer" c="white">
+            <Flex direction="column">
+              <Title order={2}>Game Timer</Title>
+              <IconHourglassHigh size={48} />
+            </Flex>
+          </Paper>
+        </Grid.Col>
+      </Grid>
     </Container>
   );
 }

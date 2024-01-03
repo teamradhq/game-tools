@@ -4,6 +4,7 @@ export const theme = createTheme({
   components: {
     Paper: {
       defaultProps: {
+        p: 'md',
         w: '100%',
         bg: 'dark.9',
         style: {
