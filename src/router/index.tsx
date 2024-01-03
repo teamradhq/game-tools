@@ -1,11 +1,16 @@
 import { createBrowserRouter, RouterProvider as Provider } from 'react-router-dom';
-import App from '@src/App.tsx';
 import React from 'react';
+import { HomePage } from '@src/router/HomePage.tsx';
+import { TimerPage } from '@src/router/TimerPage.tsx';
 
 export const router = createBrowserRouter([
   {
     path: '/',
-    element: <App />,
+    element: <HomePage />,
+  },
+  {
+    path: '/game-timer',
+    element: <TimerPage />,
   },
 ]);
 

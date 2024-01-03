@@ -1,6 +1,6 @@
 describe('hourglass timer', () => {
   beforeEach(() => {
-    cy.visit('/');
+    cy.visit('/game-timer');
 
     cy.get('button[title="Start"]').as('StartButton');
     cy.get('button[title="Pause"]').as('PauseButton');
