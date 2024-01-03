@@ -1,37 +1,28 @@
 /// <reference types="cypress" />
-// ***********************************************
-// This example commands.ts shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
-//
-// declare global {
-//   namespace Cypress {
-//     interface Chainable {
-//       login(email: string, password: string): Chainable<void>
-//       drag(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
-//       dismiss(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
-//       visit(originalFn: CommandOriginalFn, url: string, options: Partial<VisitOptions>): Chainable<Element>
-//     }
-//   }
-// }
+
+export function hasHomePageLink(): void {
+  cy.contains('Home Page').click();
+  cy.location('pathname').should('eq', '/');
+}
+Cypress.Commands.add('hasHomePageLink', hasHomePageLink);
+
+export function hasNoHomePageLink(): void {
+  cy.get('a[href="/"]').should('not.exist');
+}
+Cypress.Commands.add('hasNoHomePageLink', hasNoHomePageLink);
+
+declare global {
+  namespace Cypress {
+    interface Chainable {
+      /**
+       * Assert that the home page link exists and is clickable.
+       */
+      hasHomePageLink(): Chainable;
+
+      /**
+       * Assert that the home page link does not exist.
+       */
+      hasNoHomePageLink(): Chainable;
+    }
+  }
+}

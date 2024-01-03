@@ -54,11 +54,17 @@ module.exports = {
       },
     },
     {
-      files: ['*.cy.*'],
+      files: ['*.cy.*', 'cypress/support/*.ts'],
       extends: ['plugin:cypress/recommended'],
       plugins: ['cypress'],
       env: {
         'cypress/globals': true,
+      },
+    },
+    {
+      files: ['cypress/support/*.ts'],
+      rules: {
+        '@typescript-eslint/no-namespace': 'off',
       },
     },
   ],

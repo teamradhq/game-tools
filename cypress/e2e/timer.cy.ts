@@ -13,8 +13,7 @@ describe('hourglass timer', () => {
   });
 
   it('should link to home page', () => {
-    cy.contains('Home Page').click();
-    cy.location('pathname').should('eq', '/');
+    cy.hasHomePageLink();
   });
 
   it('should initialise controls', () => {
