@@ -7,7 +7,7 @@ describe('game scoreboard', () => {
     cy.hasHomePageLink();
   });
 
-  it.only('should display settings', () => {
+  it('should display settings', () => {
     cy.get('.mantine-Drawer-overlay').should('not.exist');
     cy.get('[data-testId="gameScoreboard-settingsButton"]').click();
     cy.get('.mantine-Drawer-overlay').should('exist');
@@ -21,6 +21,7 @@ describe('game scoreboard', () => {
 
   it('should display the scoreboard', () => {
     cy.contains('Scores');
+    cy.get('[data-testid="gameScoreboard-table"]').should('exist');
   });
 
   it('should display game summary', () => {

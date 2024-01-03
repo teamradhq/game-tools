@@ -11,17 +11,13 @@ import {
   Title,
   Text,
   VisuallyHidden,
-  MantineColor,
+  Table,
 } from '@mantine/core';
 import { IconSettings } from '@tabler/icons-react';
 import { HourGlass } from '@src/components/Timer/HourGlass.tsx';
 import { useDisclosure } from '@mantine/hooks';
-
-type Player = {
-  order: number;
-  name: string;
-  color: MantineColor;
-};
+import { Player } from '@src/store/scoreboardSlice.ts';
+import { useAppSelector } from '@src/store/hooks.ts';
 
 function PlayerSetting(props: Readonly<Player>): React.JSX.Element {
   return (
@@ -51,17 +47,9 @@ function PlayerSetting(props: Readonly<Player>): React.JSX.Element {
   );
 }
 
-function mockPlayers(): Player[] {
-  return [
-    { order: 1, name: 'Player 1', color: 'pink' },
-    { order: 2, name: 'Player 2', color: 'blue' },
-    { order: 3, name: 'Player 3', color: 'orange' },
-    { order: 4, name: 'Player 4', color: 'lime' },
-  ];
-}
-
 function GameDrawer(): React.JSX.Element {
   const [opened, { open, close }] = useDisclosure(false);
+  const players = useAppSelector((state) => state.scoreboard.players);
 
   return (
     <>
@@ -71,7 +59,7 @@ function GameDrawer(): React.JSX.Element {
             Players
           </Title>
           <Flex direction="column" align="stretch">
-            {mockPlayers().map((player) => (
+            {players.map((player) => (
               <PlayerSetting key={player.name} {...player} />
             ))}
           </Flex>
@@ -95,6 +83,9 @@ function GameDrawer(): React.JSX.Element {
 }
 
 export function ScoreboardPage(): React.JSX.Element {
+  const rounds = useAppSelector((state) => state.scoreboard.rounds);
+  const players = useAppSelector((state) => state.scoreboard.players);
+
   return (
     <Layout title={'Scoreboard'}>
       <Flex align="stretch" style={{ minHeight: '70svh' }}>
@@ -103,6 +94,39 @@ export function ScoreboardPage(): React.JSX.Element {
           <Title order={3} mb="sm">
             Scores
           </Title>
+          <Table striped data-testid="gameScoreboard-table">
+            <Table.Thead>
+              <Table.Tr>
+                <Table.Th>Round</Table.Th>
+
+                {players.map((player) => (
+                  <Table.Th key={player.name}>{player.name}</Table.Th>
+                ))}
+              </Table.Tr>
+            </Table.Thead>
+            <Table.Tbody>
+              {rounds.map((round, index) => (
+                <Table.Tr key={index}>
+                  <Table.Td ta="center">{index + 1}</Table.Td>
+                  {round.map(({ score }, index) => (
+                    <Table.Td ta="center" key={index}>
+                      {score}
+                    </Table.Td>
+                  ))}
+                </Table.Tr>
+              ))}
+            </Table.Tbody>
+            <Table.Tfoot>
+              <Table.Tr>
+                <Table.Th ta="center">Total</Table.Th>
+                {players.map((player) => (
+                  <Table.Th key={player.name} ta="center">
+                    100
+                  </Table.Th>
+                ))}
+              </Table.Tr>
+            </Table.Tfoot>
+          </Table>
         </Paper>
         <Paper w="30%">
           <Title order={3} mb="sm">
