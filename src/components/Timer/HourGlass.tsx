@@ -2,7 +2,7 @@ import React from 'react';
 import { Container, Flex, RingProgress, Text } from '@mantine/core';
 
 import { useRunTimerEffect, useTimerControls, useTimerResizeEffect } from '@src/store/hooks.ts';
-import { formatMinutesAndSeconds, getProgressColor } from '@src/utils/index.ts/utils.ts';
+import { formatMinutesAndSeconds, getProgressColor } from '@src/utils';
 
 type HourGlassProps = {
   ticksPerSecond?: number;

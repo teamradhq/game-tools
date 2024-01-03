@@ -16,8 +16,8 @@ import {
 import { IconSettings } from '@tabler/icons-react';
 import { HourGlass } from '@src/components/Timer/HourGlass.tsx';
 import { useDisclosure } from '@mantine/hooks';
-import { Player } from '@src/store/scoreboardSlice.ts';
 import { useAppSelector } from '@src/store/hooks.ts';
+import { Player } from '@src/utils/scoreboard.ts';
 
 function PlayerSetting(props: Readonly<Player>): React.JSX.Element {
   return (
@@ -85,6 +85,7 @@ function GameDrawer(): React.JSX.Element {
 export function ScoreboardPage(): React.JSX.Element {
   const rounds = useAppSelector((state) => state.scoreboard.rounds);
   const players = useAppSelector((state) => state.scoreboard.players);
+  const scores = useAppSelector((state) => state.scoreboard.scores);
 
   return (
     <Layout title={'Scoreboard'}>
@@ -121,7 +122,7 @@ export function ScoreboardPage(): React.JSX.Element {
                 <Table.Th ta="center">Total</Table.Th>
                 {players.map((player) => (
                   <Table.Th key={player.name} ta="center">
-                    100
+                    {scores[player.id] || 0}
                   </Table.Th>
                 ))}
               </Table.Tr>

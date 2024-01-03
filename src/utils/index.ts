@@ -1,3 +1,4 @@
+export * from './scoreboard';
 /**
  * Returns the total number of seconds converted from minutes and seconds.
  *
