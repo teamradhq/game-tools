@@ -1,11 +1,26 @@
-import React from 'react';
-import { ColorSwatch, Flex, Paper, Text, Title, useMantineTheme } from '@mantine/core';
+import React, { useState } from 'react';
+import {
+  Box,
+  Button,
+  ColorSwatch,
+  Divider,
+  Flex,
+  NumberInput,
+  Paper,
+  Switch,
+  Text,
+  Title,
+  useMantineTheme,
+} from '@mantine/core';
+import { IconPlus } from '@tabler/icons-react';
+
 import { Layout } from '@src/Layout.tsx';
 import { HourGlass } from '@src/components/Timer/HourGlass.tsx';
 import { GameDrawer } from '@src/components/Scoreboard/GameDrawer.tsx';
 import { ScoreTable } from '@src/components/Scoreboard/ScoreTable.tsx';
 import { useAppSelector } from '@src/store/hooks.ts';
-import { Player } from '@src/utils';
+import { Player, Score, tallyScore } from '@src/utils';
+import { selectCurrentPlayer } from '@src/store/scoreboardSlice.ts';
 
 type PlayerTotalProps = {
   player: Player;
@@ -55,10 +70,10 @@ function PlayerTotal(props: Readonly<PlayerTotalProps>): React.JSX.Element {
         initials={player.name[player.name.indexOf(' ') + 1]}
         value={score}
       />
-      <Text ta="center" fw={700} style={{ flex: '1 1 auto' }}>
+      <Text ta="center" fw={700} style={{ flex: '1 1 auto' }} className="player-name">
         {player.name}
       </Text>
-      <Text ta="right" m={0}>
+      <Text ta="right" m={0} className="player-score">
         {score}
       </Text>
     </Flex>
@@ -95,6 +110,70 @@ function GameSummary(): React.JSX.Element {
   );
 }
 
+function CurrentRound(): React.JSX.Element {
+  const roundNumber = useAppSelector((state) => state.scoreboard.roundNumber);
+  const order = useAppSelector((state) => state.scoreboard.order);
+  const player = useAppSelector(selectCurrentPlayer);
+  const [score, setScore] = useState<Score>({
+    playerId: player.id,
+    score: 0,
+    special: [],
+  });
+
+  return (
+    <Box>
+      <Title order={4} mb="sm">
+        Round {roundNumber}
+      </Title>
+      <Divider />
+      <Flex justify="space-between">
+        <Text w="33%" size="sm">
+          {order}: {player.name}
+          <br /> ({tallyScore(score)} points)
+        </Text>
+
+        <NumberInput
+          value={score.score}
+          step={1}
+          min={0}
+          w="33%"
+          onChange={(value) => {
+            setScore({
+              ...score,
+              score: Number(value),
+            });
+          }}
+        />
+        <Switch
+          label="Qwirkle"
+          onChange={(event) => {
+            if (event.currentTarget.checked) {
+              setScore({
+                ...score,
+                special: [
+                  {
+                    name: 'Qwirkle',
+                    value: 6,
+                  },
+                ],
+              });
+            } else {
+              setScore({
+                ...score,
+                special: [],
+              });
+            }
+          }}
+        />
+        <Button color="green" size="xs">
+          <IconPlus />
+        </Button>
+      </Flex>
+      <Divider />
+    </Box>
+  );
+}
+
 export function ScoreboardPage(): React.JSX.Element {
   return (
     <Layout title={'Scoreboard'}>
@@ -104,6 +183,7 @@ export function ScoreboardPage(): React.JSX.Element {
           <Title order={3} mb="sm">
             Scores
           </Title>
+          <CurrentRound />
           <ScoreTable />
         </Paper>
         <Paper w="30%">
