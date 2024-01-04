@@ -5,6 +5,7 @@ import { useAppSelector } from '@src/store/hooks.ts';
 
 export function ScoreTable(): React.JSX.Element {
   const rounds = useAppSelector((state) => state.scoreboard.rounds);
+  const currentRound = useAppSelector((state) => state.scoreboard.currentRound);
   const players = useAppSelector((state) => state.scoreboard.players);
   const scores = useAppSelector((state) => state.scoreboard.scores);
 
@@ -30,6 +31,21 @@ export function ScoreTable(): React.JSX.Element {
             ))}
           </Table.Tr>
         ))}
+        <Table.Tr>
+          <Table.Td ta="center">{rounds.length + 1}</Table.Td>
+          {currentRound.map(({ score }, index) => (
+            <Table.Td ta="center" key={index}>
+              {score}
+            </Table.Td>
+          ))}
+          {Array(players.length - currentRound.length)
+            .fill('-')
+            .map((value, index) => (
+              <Table.Td ta="center" key={index}>
+                {value}
+              </Table.Td>
+            ))}
+        </Table.Tr>
       </Table.Tbody>
       <Table.Tfoot>
         <Table.Tr>
