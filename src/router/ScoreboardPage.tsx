@@ -12,15 +12,15 @@ import {
   Title,
   useMantineTheme,
 } from '@mantine/core';
-import { IconPlus } from '@tabler/icons-react';
+import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
 
 import { Layout } from '@src/Layout.tsx';
 import { HourGlass } from '@src/components/Timer/HourGlass.tsx';
 import { GameDrawer } from '@src/components/Scoreboard/GameDrawer.tsx';
 import { ScoreTable } from '@src/components/Scoreboard/ScoreTable.tsx';
-import { useAppSelector } from '@src/store/hooks.ts';
+import { useAppDispatch, useAppSelector } from '@src/store/hooks.ts';
 import { Player, Score, tallyScore } from '@src/utils';
-import { selectCurrentPlayer } from '@src/store/scoreboardSlice.ts';
+import { selectCurrentPlayer, updateCurrentRound } from '@src/store/scoreboardSlice.ts';
 
 type PlayerTotalProps = {
   player: Player;
@@ -110,14 +110,20 @@ function GameSummary(): React.JSX.Element {
   );
 }
 
+const initialScore: Score = {
+  playerId: 0,
+  score: 0,
+  special: [],
+};
+
 function CurrentRound(): React.JSX.Element {
+  const dispatch = useAppDispatch();
   const roundNumber = useAppSelector((state) => state.scoreboard.roundNumber);
   const order = useAppSelector((state) => state.scoreboard.order);
   const player = useAppSelector(selectCurrentPlayer);
   const [score, setScore] = useState<Score>({
+    ...initialScore,
     playerId: player.id,
-    score: 0,
-    special: [],
   });
 
   return (
@@ -127,6 +133,9 @@ function CurrentRound(): React.JSX.Element {
       </Title>
       <Divider />
       <Flex justify="space-between">
+        <Button color="blue" size="xs">
+          <IconChevronLeft />
+        </Button>
         <Text w="33%" size="sm">
           {order}: {player.name}
           <br /> ({tallyScore(score)} points)
@@ -165,8 +174,15 @@ function CurrentRound(): React.JSX.Element {
             }
           }}
         />
-        <Button color="green" size="xs">
-          <IconPlus />
+        <Button
+          color="green"
+          size="xs"
+          onClick={() => {
+            dispatch(updateCurrentRound(score));
+            setScore(initialScore as Score);
+          }}
+        >
+          <IconChevronRight />
         </Button>
       </Flex>
       <Divider />
